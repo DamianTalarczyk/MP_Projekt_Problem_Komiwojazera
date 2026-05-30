@@ -1,9 +1,17 @@
 #ifndef HEURISTICTSPSOLVER_H
 #define HEURISTICTSPSOLVER_H
 
+#include "tspSolver.h"
 
-
-
-
+class HeuristicTSPSolver : public TSPSolver { 
+private:
+    int algType; // 0 - NN, 1 - SE 
+    
+    Tour<unsigned> solveNN(const DistanceGraph& g, unsigned start);
+    Tour<unsigned> solveSE(const DistanceGraph& g, unsigned start);
+public:
+    HeuristicTSPSolver(int type); 
+    Tour<unsigned> solve(const DistanceGraph& g, unsigned start = 0) override; 
+};
 
 #endif
