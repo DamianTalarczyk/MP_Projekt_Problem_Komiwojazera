@@ -6,43 +6,42 @@
 #include "distanceGraph.h"
 #include "myexceptions.h"
 
-// Użycie szablonu klasy - typ T definiuje typ zwracanego kosztu trasy 
+// Szablon klasy wymagany przez punkt 7 w PDF
 template <typename T = unsigned>
-class Tour { 
+class Tour {
 private:
-    std::vector<unsigned> visitedCities; // kolejność odwiedzanych miast [cite: 32]
-public:
-    Tour() = default;
+    std::vector<unsigned> visitedCities;
 
+public:
     void addCity(unsigned city) {
         visitedCities.push_back(city);
     }
 
-    unsigned length() const { 
+    unsigned length() const {
         return visitedCities.size();
     }
 
-    unsigned city(unsigned i) const { 
-        if (i >= visitedCities.size()) {
-            throw MyExceptions("Blad: Indeks trasy poza zakresem!");
-        }
+    unsigned city(unsigned i) const {
+        if (i >= visitedCities.size()) throw MyExceptions("Blad: Zly indeks trasy!");
         return visitedCities[i];
     }
 
-    T totalCost(const DistanceGraph& g) const { 
+    // Obliczanie sumy kosztow na podstawie grafu
+    T totalCost(const DistanceGraph& g) const {
+        T cost = 0;
         if (visitedCities.empty()) return 0;
         
-        T cost = 0;
-        for (size_t i = 0; i < visitedCities.size() - 1; ++i) {
+        for (unsigned i = 0; i < visitedCities.size() - 1; i++) {
             cost += g.distance(visitedCities[i], visitedCities[i + 1]);
         }
         return cost;
     }
 
-    // Przeciążenie operatora << dla klasy szablonowej 
-    friend std::ostream& operator<<(std::ostream& out, const Tour<T>& t) { 
-        for (unsigned i = 0; i < t.length(); ++i) { 
-            out << t.city(i) << (i == t.length() - 1 ? "" : " -> "); 
+    // Wypisywanie miast
+    friend std::ostream& operator<<(std::ostream& out, const Tour<T>& t) {
+        for (unsigned i = 0; i < t.length(); i++) {
+            out << t.city(i);
+            if (i != t.length() - 1) out << " -> ";
         }
         return out;
     }

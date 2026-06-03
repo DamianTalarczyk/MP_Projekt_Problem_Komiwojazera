@@ -4,16 +4,17 @@
 #include "distanceGraph.h"
 #include <vector>
 
-class DistanceGraphExt : public DistanceGraph { 
+// Klasa pochodna implementujaca wlasciwy graf
+class DistanceGraphExt : public DistanceGraph {
 private:
     unsigned numCities;
-    std::vector<std::vector<unsigned>> matrix; // reprezentacja macierzy
+    std::vector<std::vector<unsigned>> matrix;
+
 public:
-    DistanceGraphExt(unsigned n); 
-    
-    unsigned size() const override;
-    unsigned distance(unsigned i, unsigned j) const override;
-    void setDistance(unsigned i, unsigned j, unsigned d) override;
+    DistanceGraphExt(unsigned n);
+    unsigned size() const;
+    unsigned distance(unsigned i, unsigned j) const;
+    void setDistance(unsigned i, unsigned j, unsigned d);
 };
 
 #endif

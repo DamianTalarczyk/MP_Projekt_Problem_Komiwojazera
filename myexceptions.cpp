@@ -1,7 +1,9 @@
 #include "myexceptions.h"
 
-MyExceptions::MyExceptions(const std::string& msg) : message(msg) {}
+MyExceptions::MyExceptions(std::string message) {
+    msg = message;
+}
 
-const char* MyExceptions::what() const noexcept {
-    return message.c_str();
+std::string MyExceptions::getMessage() const {
+    return msg;
 }

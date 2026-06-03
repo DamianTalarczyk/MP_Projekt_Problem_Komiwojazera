@@ -8,18 +8,24 @@
 
 int main() {
     // Inicjalizacja grafu 
-    DistanceGraph* g = new DistanceGraphExt(5); 
+    DistanceGraph* g = new DistanceGraphExt(6); 
     
     g->setDistance(0, 1, 14); 
-    g->setDistance(0, 2, 4);  
-    g->setDistance(0, 3, 10); 
-    g->setDistance(0, 4, 20);
-    g->setDistance(1, 2, 7); 
-    g->setDistance(1, 3, 8); 
-    g->setDistance(1, 4, 7);  
-    g->setDistance(2, 3, 7);  
-    g->setDistance(2, 4, 16);
-    g->setDistance(3, 4, 2); 
+    g->setDistance(0, 2, 3);  
+    g->setDistance(0, 3, 20); 
+    g->setDistance(0, 4, 11);
+    g->setDistance(0, 5, 2);
+    g->setDistance(1, 2, 1); 
+    g->setDistance(1, 3, 6); 
+    g->setDistance(1, 4, 17);  
+    g->setDistance(1, 5, 19);  
+    g->setDistance(2, 3, 16);  
+    g->setDistance(2, 4, 3);
+    g->setDistance(2, 5, 10); 
+    g->setDistance(3, 4, 12); 
+    g->setDistance(3, 5, 4);  
+    g->setDistance(4, 5, 5);  
+
 
     std::cout << "Macierz odleglosci:\n";
     std::cout << *g << "\n"; 

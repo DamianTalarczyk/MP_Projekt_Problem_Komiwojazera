@@ -3,15 +3,15 @@
 
 #include "tspSolver.h"
 
-class HeuristicTSPSolver : public TSPSolver { 
+class HeuristicTSPSolver : public TSPSolver {
 private:
-    int algType; // 0 - NN, 1 - SE 
-    
+    int algType;
     Tour<unsigned> solveNN(const DistanceGraph& g, unsigned start);
     Tour<unsigned> solveSE(const DistanceGraph& g, unsigned start);
+    
 public:
-    HeuristicTSPSolver(int type); 
-    Tour<unsigned> solve(const DistanceGraph& g, unsigned start = 0) override; 
+    HeuristicTSPSolver(int type);
+    Tour<unsigned> solve(const DistanceGraph& g, unsigned start = 0);
 };
 
 #endif

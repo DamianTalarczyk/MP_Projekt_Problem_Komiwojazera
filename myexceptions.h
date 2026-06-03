@@ -1,15 +1,15 @@
 #ifndef MYEXCEPTIONS_H
 #define MYEXCEPTIONS_H
 
-#include <exception>
 #include <string>
 
-class MyExceptions : public std::exception {
+// Klasa wymagana w PDF do zglaszania bledow
+class MyExceptions {
 private:
-    std::string message;
+    std::string msg;
 public:
-    MyExceptions(const std::string& msg);
-    const char* what() const noexcept override;
+    MyExceptions(std::string message);
+    std::string getMessage() const;
 };
 
 #endif
