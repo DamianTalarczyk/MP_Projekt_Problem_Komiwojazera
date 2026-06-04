@@ -1,10 +1,10 @@
 #include "exactTSPSolver.h"
 #include "myexceptions.h"
 
-// Funkcja rekurencyjna. Uzywa techniki "Backtracking" (z nawrotami).
-// Sluzy do generowania permutacji (wszystkich mozliwych kolejnosci miast).
+/* Funkcja rekurencyjna. Uzywa techniki "Backtracking" (z nawrotami) alby sprawdzic każdą możliwą ścieszkę.
+Sluzy do generowania wszystkich mozliwych kolejnosci miast.*/
 void generatePermutations(int k, int n, unsigned* path, unsigned& minCost, Tour<unsigned>& bestTour, const DistanceGraph& g, unsigned start) {
-    // Warunek konca rekurencji - dotarlismy do konca tablicy, mamy ulozona 1 pelna kombinacje
+    // Warunek konca rekurencji - dotarlismy do konca tablicy, mamy ulozoną jedną pelna kombinacje
     if (k == n) {
         Tour<unsigned> currentTour;
         currentTour.addCity(start); // Miasto 0

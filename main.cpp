@@ -4,8 +4,7 @@
 #include "heuristicTSPSolver.h"
 #include "myexceptions.h"
 
-// Glowny plik wywolujacy dzialanie systemu. 
-// Dokladne odzwierciedlenie sekcji "Użycie" z PDF [cite: 60-122].
+// Glowny plik wywolujacy dzialanie programu
 int main() {
     try { // Blok przechwytujacy wyjatki rzucane z klas
         
@@ -13,7 +12,7 @@ int main() {
         DistanceGraph* g = new DistanceGraphExt(6); 
 
         
-        // Zapisywanie polaczen w grafie (mapie) [cite: 62-92] 
+        // Zapisywanie polaczen w grafie (mapie)
         g->setDistance(0, 1, 14); 
         g->setDistance(0, 2, 3);  
         g->setDistance(0, 3, 20); 
@@ -31,20 +30,20 @@ int main() {
         g->setDistance(4, 5, 5);  
 
         std::cout << "Macierz odleglosci:\n";
-        std::cout << *g << "\n"; // Uzycie przeciazonego operatora << [cite: 98-99]
+        std::cout << *g << "\n"; // Uzycie przeciazonego operatora <<
 
-        // Tworzenie "ekspertow" do liczenia tras. [cite: 100-102]
-        // Tu rowniez widac polimorfizm - pod jednym interfejsem TSPSolver kryja sie rozne algorytmy.
+        /*Tworzenie "ekspertow" do liczenia tras.
+        Tu rowniez widac polimorfizm - pod jednym interfejsem TSPSolver kryja sie rozne algorytmy.*/
         TSPSolver* exact = new ExactTSPSolver();
         TSPSolver* greedyNN = new HeuristicTSPSolver(0);
         TSPSolver* greedySE = new HeuristicTSPSolver(1);
 
-        // Wyznaczanie tras [cite: 93-94]
+        // Wyznaczanie tras
         Tour<unsigned> t1 = exact->solve(*g, 0);
         Tour<unsigned> t2 = greedyNN->solve(*g, 0);
         Tour<unsigned> t3 = greedySE->solve(*g, 0);
 
-        // Wyswietlanie wynikow [cite: 95-118]
+        // Wyswietlanie wynikow 
         std::cout << "=== ALGORYTM DOKLADNY ===\n";
         std::cout << t1 << "\n"; // Operator << dla trasy Tour
         std::cout << "Koszt: " << t1.totalCost(*g) << "\n\n";
@@ -58,15 +57,14 @@ int main() {
         std::cout << "Koszt: " << t3.totalCost(*g) << "\n\n";
 
         // Zarzadzanie pamiecia - instrukcja delete zwalnia wczesniej przydzielona nowa pamiec (new)
-        // PDF wymagal odpowiedniej obslugi pamieci[cite: 58].
         delete greedySE;
         delete greedyNN;
         delete exact;
         delete g;
 
     } catch (const MyExceptions& e) {
-        // Jesli jakas z metod rzuci wyjatkiem (np. wpisalibysmy start=-1),
-        // program tu wpadnie, wyswietli tekst bledu i bezpiecznie sie zakonczy.
+        /* Jesli jakas z metod rzuci wyjatkiem
+        program tu wpadnie, wyswietli tekst bledu i bezpiecznie sie zakonczy.*/
         std::cout << e.getMessage() << std::endl;
     }
 

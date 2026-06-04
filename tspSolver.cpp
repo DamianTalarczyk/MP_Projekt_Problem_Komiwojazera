@@ -1,1 +1,1 @@
-// Pusty plik - TSPSolver to klasa czysto abstrakcyjna (interfejs). [cite: 130]
+// Pusty plik - TSPSolver to klasa abstrakcyjna (interfejs)

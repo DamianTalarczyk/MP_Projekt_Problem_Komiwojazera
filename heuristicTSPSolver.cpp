@@ -10,16 +10,15 @@ HeuristicTSPSolver::HeuristicTSPSolver(int type) {
 Tour<unsigned> HeuristicTSPSolver::solve(const DistanceGraph& g, unsigned start) {
     if (start >= g.size()) throw MyExceptions("Blad: Zly start");
     
-    // Dystrybutor - kieruje do odpowiedniej metody zaleznie od typu podanego w main.cpp
+    //DO POPRAWY: Dystrybutor - kieruje do odpowiedniej metody zaleznie od typu podanego w main.cpp
     if (algType == 0) return solveNN(g, start);
     else return solveSE(g, start);
 }
 
-// ==========================================
-// METODA 0: Najblizszy Sasiad (NN) [cite: 52-53]
-// ZASADA DZIALANIA: Stojac w danym miescie, wybierz najkrotsza droge 
-// do miasta, w ktorym cie jeszcze nie bylo.
-// ==========================================
+
+/*DO POPRAWY(za krotkie) Metoda 0: Najblizszy Sasiad (NN)
+Stojac w danym miescie, wybierz najkrotsza droge 
+do miasta, w ktorym cie jeszcze nie bylo. */
 Tour<unsigned> HeuristicTSPSolver::solveNN(const DistanceGraph& g, unsigned start) {
     unsigned n = g.size();
     bool visited[20] = {false}; // Tablica pilnujaca, by nie odwiedzic miasta dwa razy
@@ -36,7 +35,7 @@ Tour<unsigned> HeuristicTSPSolver::solveNN(const DistanceGraph& g, unsigned star
         
         // Przegladamy mapę w poszukiwaniu najkrotszej drogi
         for (unsigned j = 0; j < n; j++) {
-            // Jesli tam nie bylismy (!visited) ORAZ dystans jest mniejszy niz dotychczasowy rekord
+            // Jesli tam nie bylismy (!visited) oraz dystans jest mniejszy niz dotychczasowy rekord
             if (!visited[j] && g.distance(current, j) < minDst) {
                 minDst = g.distance(current, j);
                 nextCity = j;
@@ -52,22 +51,21 @@ Tour<unsigned> HeuristicTSPSolver::solveNN(const DistanceGraph& g, unsigned star
     return tour;
 }
 
-// ==========================================
-// METODA 1: Najmniejsza Krawedz (SE) [cite: 52, 54]
-// ZASADA DZIALANIA: Bierzemy wszystkie polaczenia na swiecie, 
-// wybieramy najkrotsze i rysujemy. Pilnujemy jednak dwoch zasad:
-// 1. Zadne miasto nie moze miec 3 narysowanych drog.
-// 2. Narysowane drogi nie moga zamknac malego kolka (zanim nie polaczymy wszystkiego).
-// ==========================================
+/*Do POPRAWY(za krotkie /lepsze tlumaczenie) Metoda 1: Najmniejsza Krawedz (SE)
+Bierzemy wszystkie polaczenia na swiecie, 
+wybieramy najkrotsze i rysujemy. Pilnujemy jednak dwoch zasad:
+1. Zadne miasto nie moze miec 3 narysowanych drog.
+2. Narysowane drogi nie moga zamknac malego kolka (zanim nie polaczymy wszystkiego).*/
+
 
 // Struktura pomocnicza reprezentujaca jedno polaczenie (krawedz)
 struct SimpleEdge {
     unsigned u, v, weight;
 };
 
-// Funkcja chroniaca przed zamknieciem sie trasy w srodku (DFS / BFS z teorii grafow).
-// Pyta: "Czy miedzy miastem 'startNode' a 'targetNode' istnieje juz jakas inna seria drog?"
-// Jesli tak (zwraca TRUE), nie mozemy pociagnac krawedzi bezposrednio miedzy nimi.
+/*DO POPRAWY(lpesze tlumacznie): Funkcja chroniaca przed zamknieciem sie trasy w srodku (DFS / BFS z teorii grafow).
+Pyta: "Czy miedzy miastem 'startNode' a 'targetNode' istnieje juz jakas inna seria drog?"
+Jesli tak (zwraca TRUE), nie mozemy pociagnac krawedzi bezposrednio miedzy nimi.*/
 bool checkCycle(unsigned startNode, unsigned targetNode, unsigned n, unsigned adj[20][20]) {
     bool visited[20] = {false};
     unsigned q[20]; // Prosta kolejka uzywana do przejscia grafu
@@ -81,7 +79,7 @@ bool checkCycle(unsigned startNode, unsigned targetNode, unsigned n, unsigned ad
         for (unsigned i = 0; i < n; i++) {
             // Jesli istnieje zaakceptowana sciezka z obecnego i w niej nie bylismy
             if (adj[curr][i] == 1 && !visited[i]) {
-                if (i == targetNode) return true; // Znalazlem inne polaczenie! Grozi cyklem.
+                if (i == targetNode) return true; // PO POPRAWY(lepsze tlumaczenie):Znalazlem inne polaczenie! Grozi cyklem.
                 visited[i] = true;
                 q[tail++] = i;
             }
@@ -103,7 +101,7 @@ Tour<unsigned> HeuristicTSPSolver::solveSE(const DistanceGraph& g, unsigned star
         }
     }
     
-    // Sortowanie babelkowe: Ukladamy krawedzie rosnaco wedlug kosztow
+    // Sortowanie babelkowe: Ukladamy krawedzie rosnaco wedlug kosztow - DO POPRAWY(DLACZEGO)
     for (unsigned i = 0; i < edges.size(); i++) {
         for (unsigned j = 0; j < edges.size() - 1; j++) {
             if (edges[j].weight > edges[j+1].weight) {
@@ -115,7 +113,7 @@ Tour<unsigned> HeuristicTSPSolver::solveSE(const DistanceGraph& g, unsigned star
     }
     
     unsigned degrees[20] = {0}; // Zlicza drogi dopiete do konkretnego miasta
-    unsigned adj[20][20] = {0}; // Tablica zapisujaca wylacznie ZAAKCEPTOWANE drogi
+    unsigned adj[20][20] = {0}; // Tablica zapisujaca wylacznie zaakceptowane drogi
     unsigned edgesCount = 0;
     
     // Idziemy po krawedziach od najtanszej do najdrozszej
@@ -125,10 +123,10 @@ Tour<unsigned> HeuristicTSPSolver::solveSE(const DistanceGraph& g, unsigned star
         unsigned u = edges[i].u;
         unsigned v = edges[i].v;
         
-        // ZASADA 1[cite: 54]: Zaden wierzcholek nie moze miec stopnia wiekszego niz 2
+        // Zasada 1: Zaden wierzcholek nie moze miec stopnia wiekszego niz 2
         if (degrees[u] < 2 && degrees[v] < 2) {
             
-            // ZASADA 2[cite: 54]: Brak przedwczesnych mniejszych cykli
+            // Zasada 2: Brak przedwczesnych mniejszych cykli
             // Jesli nie rysujemy wlasnie ostatniej krawedzi, sprawdz czy nie zrobimy kolka
             if (edgesCount < n - 1 && checkCycle(u, v, n, adj)) {
                 continue; // Odstaz ta droge, szukaj nastepnej

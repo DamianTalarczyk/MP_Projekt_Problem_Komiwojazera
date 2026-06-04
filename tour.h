@@ -5,15 +5,15 @@
 #include "distanceGraph.h"
 #include "myexceptions.h"
 
-// Szablon klasy (Punkt 8 PDF [cite: 59]).
-// Pozwala on na stworzenie trasy, ktorej koszt moze byc typu int, double, float itd.
-// T = unsigned oznacza, ze domyslnie uzywamy liczb calkowitych dodatnich.
-// UWAGA NA OBRONIE: Poniewaz to szablon, caly kod metod musi byc w pliku .h.
-// Kompilator instancjonuje (generuje) kod dopiero w momencie uzycia w main.cpp.
+/* Szablon klasy:
+Pozwala on na stworzenie trasy, ktorej koszt moze byc typu int, double, float itd. (Dzieki temu ze jest to szablon)
+T = unsigned oznacza, ze domyslnie uzywamy liczb calkowitych dodatnich.
+Poniewaz to szablon, caly kod metod musi byc w pliku .h
+Kompilator generuje kod w momencie uzycia w main.cpp dlatego tour.h pozostaje pusty*/
 template <typename T = unsigned>
 class Tour {
 private:
-    std::vector<unsigned> visitedCities; // Zapisuje kolejne miasta np. [0, 2, 1, 4, 3, 0]
+    std::vector<unsigned> visitedCities; // Zapisuje kolejne miasta
 
 public:
     void addCity(unsigned city) { visitedCities.push_back(city); }
@@ -24,20 +24,20 @@ public:
         return visitedCities[i];
     }
 
-    // NAJWAZNIEJSZA METODA: Oblicza sume kosztow calej wyznaczonej trasy[cite: 31].
+    // Metoda totalCost: Oblicza sume kosztow calej wyznaczonej trasy
     T totalCost(const DistanceGraph& g) const {
         T cost = 0;
         if (visitedCities.empty()) return 0; // Zabezpieczenie przed pusta trasa
         
-        // Petla idzie po liscie odwiedzonych miast.
-        // Odczytuje z grafu 'g' odleglosc miedzy obecnym miastem [i], a nastepnym [i+1].
+        /* Petla idzie po liscie odwiedzonych miast.
+        Odczytuje z grafu 'g' odleglosc miedzy obecnym miastem [i], a nastepnym [i+1].*/
         for (unsigned i = 0; i < visitedCities.size() - 1; i++) {
             cost += g.distance(visitedCities[i], visitedCities[i + 1]);
         }
         return cost;
     }
 
-    // PDF [cite: 34-36]: Przeciazenie do wypisywania z wizualizacja strzalek.
+    // Przeciazenie do wypisywania z strzalkami
     friend std::ostream& operator<<(std::ostream& out, const Tour<T>& t) {
         for (unsigned i = 0; i < t.length(); i++) {
             out << t.city(i);

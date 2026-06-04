@@ -3,7 +3,7 @@
 #include "tour.h"
 #include "distanceGraph.h"
 
-// Interfejs z PDF[cite: 37]. Baza dla wszystkich ekspertow od szukania tras.
+//DO POPARWY: Interfejs dla wszystkich ekspertow od szukania tras.
 class TSPSolver {
 public:
     virtual ~TSPSolver() {} // Wirtualny destruktor

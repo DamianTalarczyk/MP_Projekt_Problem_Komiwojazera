@@ -3,9 +3,8 @@
 #include <string>
 #include <exception>
 
-// Klasa wymagana przez punkt 7 instrukcji PDF[cite: 55].
-// Dziedziczy po standardowej klasie wyjatkow C++ (std::exception), 
-// dzieki czemu wspolpracuje z blokami try-catch w main.cpp.
+/* Dziedziczy po standardowej klasie wyjatkow C++ (std::exception), 
+dzieki czemu wspolpracuje z blokami try-catch w main.cpp*/
 class MyExceptions : public std::exception {
 private:
     std::string msg; // Zmienna przechowujaca tresc bledu
