@@ -10,10 +10,10 @@
 template <typename T = unsigned>
 class Tour {
 private:
-    std::vector<unsigned> visitedCities;
+    std::vector<T> visitedCities;
 
 public:
-    void addCity(unsigned city) {
+    void addCity(T city) {
         visitedCities.push_back(city);
     }
 
@@ -21,7 +21,7 @@ public:
         return visitedCities.size();
     }
 
-    unsigned city(unsigned i) const {
+    T city(unsigned i) const {
         if (i >= visitedCities.size()) throw MyExceptions("Blad: Zly indeks trasy!");
         return visitedCities[i];
     }

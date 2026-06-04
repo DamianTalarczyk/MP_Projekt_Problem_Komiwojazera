@@ -4,7 +4,7 @@
 #include <string>
 
 // Klasa wymagana w PDF do zglaszania bledow
-class MyExceptions {
+class MyExceptions : public std::exception {
 private:
     std::string msg;
 public:
