@@ -42,27 +42,27 @@ int main() {
             throw MyExceptions("Blad: Nie udalo sie otworzyc pliku graf.txt");
         }
 
-        // Wczytujemy liczbê miast (pierwsza wartoœæ z pliku)
+        // Wczytujemy liczbï¿½ miast (pierwsza wartoï¿½ï¿½ z pliku)
         unsigned n;
         if (!(file >> n)) {
             throw MyExceptions("Blad: Brak liczby miast");
         }
 
         // Tworzymy obiekt grafu i
-        // przekazujemy dynamicznie zmienn¹ 'n' wczytan¹ z pliku
+        // przekazujemy dynamicznie zmiennï¿½ 'n' wczytanï¿½ z pliku
         DistanceGraph* g = new DistanceGraphExt(n);
 
-        // 4. Za pomoc¹ pêtli wczytujemy resztê macierzy i uzupe³niamy graf
+        // 4. Za pomocï¿½ pï¿½tli wczytujemy resztï¿½ macierzy i uzupeï¿½niamy graf
         for (unsigned i = 0; i < n; i++) {
             for (unsigned j = 0; j < n; j++) {
                 unsigned val;
                 if (!(file >> val)) {
                     throw MyExceptions("Blad: Za malo danych w pliku grafu!");
                 }
-                g->setDistance(i, j, val); // U¿ywamy standardowej metody z instrukcji
+                g->setDistance(i, j, val); // Uï¿½ywamy standardowej metody z instrukcji
             }
         }
-        file.close(); // Zamykamy strumieñ pliku, dane s¹ ju¿ bezpieczne w obiekcie grafu
+        file.close(); // Zamykamy strumieï¿½ pliku, dane sï¿½ juï¿½ bezpieczne w obiekcie grafu
 
         cout << "Macierz odleglosci zaladowana z pliku (Rozmiar: " << n << "):\n";
         cout << *g << "\n";
@@ -74,36 +74,36 @@ int main() {
         TSPSolver* greedySE = new HeuristicTSPSolver(1);
 
         // Wyznaczanie tras
-        // Pomiar dla algorytmu dok³adnego
+        // Pomiar dla algorytmu dokï¿½adnego
         auto startExact = chrono::high_resolution_clock::now();
         Tour<unsigned> t1 = exact->solve(*g, 0);
         auto endExact = chrono::high_resolution_clock::now();
         chrono::duration<double, milli> durationExact = endExact - startExact;
 
-        // Pomiar dla heurystyki Najbli¿szego S¹siada (NN)
+        // Pomiar dla heurystyki Najbliï¿½szego Sï¿½siada (NN)
         auto startNN = chrono::high_resolution_clock::now();
         Tour<unsigned> t2 = greedyNN->solve(*g, 0);
         auto endNN = chrono::high_resolution_clock::now();
         chrono::duration<double, milli> durationNN = endNN - startNN;
 
-        // Pomiar dla heurystyki Najmniejszej Krawêdzi (SE)
+        // Pomiar dla heurystyki Najmniejszej Krawï¿½dzi (SE)
         auto startSE = chrono::high_resolution_clock::now();
         Tour<unsigned> t3 = greedySE->solve(*g, 0);
         auto endSE = chrono::high_resolution_clock::now();
         chrono::duration<double, milli> durationSE = endSE - startSE;
 
         // Wyswietlanie wynikow 
-        cout << "=== ALGORYTM DOKLADNY ===\n";
+        cout << "ALgorytm Dokladny\n";
         cout << t1 << "\n"; // Operator << dla trasy Tour
         cout << "Koszt: " << t1.totalCost(*g) << "\n";
         cout << "Czas wykonania: " << durationExact.count() << " ms\n\n";
 
-        cout << "=== HEURYSTYKA NN ===\n";
+        cout << "Heurystyka - Nearest Neighbor\n";
         cout << t2 << "\n";
         cout << "Koszt: " << t2.totalCost(*g) << "\n";
         cout << "Czas wykonania: " << durationNN.count() << " ms\n\n";
 
-        cout << "=== HEURYSTYKA SMALLEST EDGE ===\n";
+        cout << "Heurystyka - Smallest Edge\n";
         cout << t3 << "\n";
         cout << "Koszt: " << t3.totalCost(*g) << "\n";
         cout << "Czas wykonania: " << durationSE.count() << " ms\n\n";
