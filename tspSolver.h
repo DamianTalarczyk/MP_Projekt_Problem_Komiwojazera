@@ -1,14 +1,14 @@
 #ifndef TSPSOLVER_H
 #define TSPSOLVER_H
-
 #include "tour.h"
 #include "distanceGraph.h"
 
-// Glowny interfejs dla algorytmow
+// Interfejs z PDF[cite: 37]. Baza dla wszystkich ekspertow od szukania tras.
 class TSPSolver {
 public:
-    virtual ~TSPSolver() {}
+    virtual ~TSPSolver() {} // Wirtualny destruktor
+    
+    // Metoda czysto wirtualna. Kazdy algorytm musi przyjac mape 'g' i wydac trase 'Tour'.
     virtual Tour<unsigned> solve(const DistanceGraph& g, unsigned start = 0) = 0;
 };
-
 #endif

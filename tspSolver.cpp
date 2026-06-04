@@ -1,2 +1,1 @@
-#include "tspSolver.h"
-// Pusty plik - klasa czysto abstrakcyjna (interfejs) nie potrzebuje ciala
+// Pusty plik - TSPSolver to klasa czysto abstrakcyjna (interfejs). [cite: 130]
