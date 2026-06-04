@@ -42,27 +42,27 @@ int main() {
             throw MyExceptions("Blad: Nie udalo sie otworzyc pliku graf.txt");
         }
 
-        // Wczytujemy liczb� miast (pierwsza warto�� z pliku)
+        // Wczytujemy liczbe miast (pierwsza wartosc z pliku)
         unsigned n;
         if (!(file >> n)) {
             throw MyExceptions("Blad: Brak liczby miast");
         }
 
         // Tworzymy obiekt grafu i
-        // przekazujemy dynamicznie zmienn� 'n' wczytan� z pliku
+        // przekazujemy dynamicznie zmienna 'n' wczytana z pliku
         DistanceGraph* g = new DistanceGraphExt(n);
 
-        // 4. Za pomoc� p�tli wczytujemy reszt� macierzy i uzupe�niamy graf
+        // Za pomoca petli wczytujemy reszte macierzy i uzupelniamy graf
         for (unsigned i = 0; i < n; i++) {
             for (unsigned j = 0; j < n; j++) {
                 unsigned val;
                 if (!(file >> val)) {
                     throw MyExceptions("Blad: Za malo danych w pliku grafu!");
                 }
-                g->setDistance(i, j, val); // U�ywamy standardowej metody z instrukcji
+                g->setDistance(i, j, val); // Uzywamy standardowej metody z instrukcji
             }
         }
-        file.close(); // Zamykamy strumie� pliku, dane s� ju� bezpieczne w obiekcie grafu
+        file.close(); // Zamykamy strumien pliku, dane sa juz bezpieczne w obiekcie grafu
 
         cout << "Macierz odleglosci zaladowana z pliku (Rozmiar: " << n << "):\n";
         cout << *g << "\n";
@@ -74,19 +74,19 @@ int main() {
         TSPSolver* greedySE = new HeuristicTSPSolver(1);
 
         // Wyznaczanie tras
-        // Pomiar dla algorytmu dok�adnego
+        // Pomiar dla algorytmu dokladnego
         auto startExact = chrono::high_resolution_clock::now();
         Tour<unsigned> t1 = exact->solve(*g, 0);
         auto endExact = chrono::high_resolution_clock::now();
         chrono::duration<double, milli> durationExact = endExact - startExact;
 
-        // Pomiar dla heurystyki Najbli�szego S�siada (NN)
+        // Pomiar dla heurystyki Najblizszego Sasiada (NN)
         auto startNN = chrono::high_resolution_clock::now();
         Tour<unsigned> t2 = greedyNN->solve(*g, 0);
         auto endNN = chrono::high_resolution_clock::now();
         chrono::duration<double, milli> durationNN = endNN - startNN;
 
-        // Pomiar dla heurystyki Najmniejszej Kraw�dzi (SE)
+        // Pomiar dla heurystyki Najmniejszej Krawedzi (SE)
         auto startSE = chrono::high_resolution_clock::now();
         Tour<unsigned> t3 = greedySE->solve(*g, 0);
         auto endSE = chrono::high_resolution_clock::now();
