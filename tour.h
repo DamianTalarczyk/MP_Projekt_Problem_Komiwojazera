@@ -5,6 +5,8 @@
 #include "distanceGraph.h"
 #include "myexceptions.h"
 
+using namespace std;
+
 /* Szablon klasy:
 Pozwala on na stworzenie trasy, ktorej koszt moze byc typu int, double, float itd. (Dzieki temu ze jest to szablon)
 T = unsigned oznacza, ze domyslnie uzywamy liczb calkowitych dodatnich.
@@ -13,7 +15,7 @@ Kompilator generuje kod w momencie uzycia w main.cpp dlatego tour.h pozostaje pu
 template <typename T = unsigned>
 class Tour {
 private:
-    std::vector<unsigned> visitedCities; // Zapisuje kolejne miasta
+    vector<unsigned> visitedCities; // Zapisuje kolejne miasta
 
 public:
     void addCity(unsigned city) { visitedCities.push_back(city); }
@@ -38,7 +40,7 @@ public:
     }
 
     // Przeciazenie do wypisywania z strzalkami
-    friend std::ostream& operator<<(std::ostream& out, const Tour<T>& t) {
+    friend ostream& operator<<(ostream& out, const Tour<T>& t) {
         for (unsigned i = 0; i < t.length(); i++) {
             out << t.city(i);
             // Dopoki nie jestesmy na ostatnim miescie, wypisuj strzalke miedzy nimi

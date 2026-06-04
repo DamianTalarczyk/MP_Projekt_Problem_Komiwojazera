@@ -1,6 +1,8 @@
 #include "exactTSPSolver.h"
 #include "myexceptions.h"
 
+using namespace std;
+
 /* Funkcja rekurencyjna. Uzywa techniki "Backtracking" (z nawrotami) alby sprawdzic każdą możliwą ścieszkę.
 Sluzy do generowania wszystkich mozliwych kolejnosci miast.*/
 void generatePermutations(int k, int n, unsigned* path, unsigned& minCost, Tour<unsigned>& bestTour, const DistanceGraph& g, unsigned start) {

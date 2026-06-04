@@ -3,13 +3,15 @@
 #include <string>
 #include <exception>
 
+using namespace std;
+
 /* Dziedziczy po standardowej klasie wyjatkow C++ (std::exception), 
 dzieki czemu wspolpracuje z blokami try-catch w main.cpp*/
-class MyExceptions : public std::exception {
+class MyExceptions : public exception {
 private:
-    std::string msg; // Zmienna przechowujaca tresc bledu
+    string msg; // Zmienna przechowujaca tresc bledu
 public:
-    MyExceptions(std::string message);
-    std::string getMessage() const;
+    MyExceptions(string message);
+    string getMessage() const;
 };
 #endif

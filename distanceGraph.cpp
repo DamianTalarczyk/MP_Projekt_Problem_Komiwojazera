@@ -1,8 +1,10 @@
 #include "distanceGraph.h"
 
+using namespace std;
+
 /* Implementacja wypisywania grafu na ekran.
 Uzywamy dwoch petli for (rzędy i kolumny), aby narysowac macierz.*/
-std::ostream& operator<<(std::ostream& out, const DistanceGraph& g) {
+ostream& operator<<(ostream& out, const DistanceGraph& g) {
     unsigned n = g.size();
     for (unsigned i = 0; i < n; i++) {
         for (unsigned j = 0; j < n; j++) {

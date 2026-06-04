@@ -2,6 +2,8 @@
 #define DISTANCEGRAPH_H
 #include <iostream>
 
+using namespace std;
+
 /* Klasa abstrakcyjna ("szablon/umowa"). Metody z "= 0" to metody czysto wirtualne.
 Oznacza to, ze ta klasa nie ma kodu - wymusza tylko, aby inne klasy (np. Ext)
 mialy dokladnie takie same metody. To zapewnia elastycznosc*/
@@ -14,6 +16,6 @@ public:
     virtual void setDistance(unsigned i, unsigned j, unsigned d) = 0;
     
     // Przeciazenie operatora wypisywania calej macierzy
-    friend std::ostream& operator<<(std::ostream& out, const DistanceGraph& g);
+    friend ostream& operator<<(ostream& out, const DistanceGraph& g);
 };
 #endif

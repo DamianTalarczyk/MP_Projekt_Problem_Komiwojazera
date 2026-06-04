@@ -3,6 +3,8 @@
 #include "distanceGraph.h"
 #include <vector>
 
+using namespace std;
+
 // Klasa dziedziczy po klasie DistanceGraph
 class DistanceGraphExt : public DistanceGraph {
 private:
@@ -10,7 +12,7 @@ private:
     
     /* Dwuwymiarowa tablica dynamiczna (wektor wektorow) przechowujaca odleglosci.
     Np. matrix[0][2] poda nam koszt przejazdu z miasta 0 do 2.*/
-    std::vector<std::vector<unsigned>> matrix;
+    vector<vector<unsigned>> matrix;
 
 public:
     DistanceGraphExt(unsigned n);

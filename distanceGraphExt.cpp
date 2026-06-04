@@ -1,13 +1,15 @@
 #include "distanceGraphExt.h"
 #include "myexceptions.h"
 
+using namespace std;
+
 // Konstruktor tworzący graf dla 'n' miast
 DistanceGraphExt::DistanceGraphExt(unsigned n) {
     numCities = n;
     unsigned INF = 999999; // Zabezpieczenie - Brakujaca droga to dla algorytmu nieskonczonosc
     
     for (unsigned i = 0; i < n; i++) {
-        std::vector<unsigned> row;
+        vector<unsigned> row;
         for (unsigned j = 0; j < n; j++) {
             // Odleglosc do samego siebie (na przekatnej) musi wynosic 0.
             if (i == j) row.push_back(0); 

@@ -4,6 +4,8 @@
 #include "heuristicTSPSolver.h"
 #include "myexceptions.h"
 
+using namespace std;
+
 // Glowny plik wywolujacy dzialanie programu
 int main() {
     try { // Blok przechwytujacy wyjatki rzucane z klas
@@ -29,8 +31,8 @@ int main() {
         g->setDistance(3, 5, 4);  
         g->setDistance(4, 5, 5);  
 
-        std::cout << "Macierz odleglosci:\n";
-        std::cout << *g << "\n"; // Uzycie przeciazonego operatora <<
+        cout << "Macierz odleglosci:\n";
+        cout << *g << "\n"; // Uzycie przeciazonego operatora <<
 
         /*Tworzenie "ekspertow" do liczenia tras.
         Tu rowniez widac polimorfizm - pod jednym interfejsem TSPSolver kryja sie rozne algorytmy.*/
@@ -44,17 +46,17 @@ int main() {
         Tour<unsigned> t3 = greedySE->solve(*g, 0);
 
         // Wyswietlanie wynikow 
-        std::cout << "=== ALGORYTM DOKLADNY ===\n";
-        std::cout << t1 << "\n"; // Operator << dla trasy Tour
-        std::cout << "Koszt: " << t1.totalCost(*g) << "\n\n";
+        cout << "=== ALGORYTM DOKLADNY ===\n";
+        cout << t1 << "\n"; // Operator << dla trasy Tour
+        cout << "Koszt: " << t1.totalCost(*g) << "\n\n";
 
-        std::cout << "=== HEURYSTYKA NN ===\n";
-        std::cout << t2 << "\n";
-        std::cout << "Koszt: " << t2.totalCost(*g) << "\n\n";
+        cout << "=== HEURYSTYKA NN ===\n";
+        cout << t2 << "\n";
+        cout << "Koszt: " << t2.totalCost(*g) << "\n\n";
 
-        std::cout << "=== HEURYSTYKA SMALLEST EDGE ===\n";
-        std::cout << t3 << "\n";
-        std::cout << "Koszt: " << t3.totalCost(*g) << "\n\n";
+        cout << "=== HEURYSTYKA SMALLEST EDGE ===\n";
+        cout << t3 << "\n";
+        cout << "Koszt: " << t3.totalCost(*g) << "\n\n";
 
         // Zarzadzanie pamiecia - instrukcja delete zwalnia wczesniej przydzielona nowa pamiec (new)
         delete greedySE;
@@ -65,7 +67,7 @@ int main() {
     } catch (const MyExceptions& e) {
         /* Jesli jakas z metod rzuci wyjatkiem
         program tu wpadnie, wyswietli tekst bledu i bezpiecznie sie zakonczy.*/
-        std::cout << e.getMessage() << std::endl;
+        cout << e.getMessage() << endl;
     }
 
     return 0;
