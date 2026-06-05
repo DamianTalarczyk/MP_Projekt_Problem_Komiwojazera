@@ -10,15 +10,20 @@ HeuristicTSPSolver::HeuristicTSPSolver(int type) {
 Tour<unsigned> HeuristicTSPSolver::solve(const DistanceGraph& g, unsigned start) {
     if (start >= g.size()) throw MyExceptions("Blad: Zly start");
     
-    //DO POPRAWY: Dystrybutor - kieruje do odpowiedniej metody zaleznie od typu podanego w main.cpp
+    /* Polimorficzny dystrybutor zadań przekierowuje wykonanie do wybranej metody 
+    heurystycznej na podstawie parametru "algType" ustawionego w funkcji main*/
     if (algType == 0) return solveNN(g, start);
     else return solveSE(g, start);
 }
 
 
-/*DO POPRAWY(za krotkie) Metoda 0: Najblizszy Sasiad (NN)
-Stojac w danym miescie, wybierz najkrotsza droge 
-do miasta, w ktorym cie jeszcze nie bylo. */
+/*  Metoda 0: Algorytm Najbliższego Sąsiada (Nearest Neighbor - NN)
+    "lokalny" algorytm zachłanny: Startując z miasta początkowego, program w każdym kroku 
+    analizuje odległości wyłącznie z obecnego miejsca i wybiera najbliższe, jeszcze nieodwiedzone miasto.
+    Zaleta jest to że algorytm jest niezwykle szybki i prosty w implementacji.
+    Wada jest to ze algorytm jest "krótkowzroczny" – nie analizuje globalnej mapy, przez co na samym końcu 
+    trasy może zostać zmuszony do powrotu bardzo kosztowną krawedzia przez to
+    ze nie moze przejsc dwa razy do tego samego miasta (wpada w pułapkę zachłanną). */
 Tour<unsigned> HeuristicTSPSolver::solveNN(const DistanceGraph& g, unsigned start) {
     unsigned n = g.size();
     bool visited[20] = {false}; // Tablica pilnujaca, by nie odwiedzic miasta dwa razy
@@ -51,11 +56,12 @@ Tour<unsigned> HeuristicTSPSolver::solveNN(const DistanceGraph& g, unsigned star
     return tour;
 }
 
-/*Do POPRAWY(za krotkie /lepsze tlumaczenie) Metoda 1: Najmniejsza Krawedz (SE)
-Bierzemy wszystkie polaczenia na swiecie, 
-wybieramy najkrotsze i rysujemy. Pilnujemy jednak dwoch zasad:
-1. Zadne miasto nie moze miec 3 narysowanych drog.
-2. Narysowane drogi nie moga zamknac malego kolka (zanim nie polaczymy wszystkiego).*/
+/* Metoda 1: Algorytm Najmniejszej Krawędzi (Smallest Edge - SE)
+   "Globalny" algorytm zachłanny: W przeciwieństwie do NN, ten algorytm nie buduje trasy liniowo "od miasta do miasta".
+   Analizuje on od razu całą mapę, wybierając krawędzie od absolutnie najtańszej do najdroższej.
+   Aby powstała poprawna, pojedyncza pętla zamknięta (cykl Hamiltona), musimy pilnować dwóch reguł:
+   1. Stopień wierzchołka: Z żadnego miasta nie mogą wychodzić więcej niż 2 krawędzie.
+   2. Spójność grafu: Wybrana krawędź nie może zamknąć małego, izolowanego podcyklu (kółka) przed odwiedzeniem wszystkich miast. */
 
 
 // Struktura pomocnicza reprezentujaca jedno polaczenie (krawedz)
@@ -63,9 +69,10 @@ struct SimpleEdge {
     unsigned u, v, weight;
 };
 
-/*DO POPRAWY(lpesze tlumacznie): Funkcja chroniaca przed zamknieciem sie trasy w srodku (DFS / BFS z teorii grafow).
-Pyta: "Czy miedzy miastem 'startNode' a 'targetNode' istnieje juz jakas inna seria drog?"
-Jesli tak (zwraca TRUE), nie mozemy pociagnac krawedzi bezposrednio miedzy nimi.*/
+/* Algorytm przeszukiwania grafu wszerz (BFS - Breadth-First Search) do wykrywania cykli.
+   Funkcja sprawdza, czy pomiędzy miastami 'startNode' a 'targetNode' istnieje już alternatywna ścieżka 
+   utworzona przez wcześniej zaakceptowane drogi. Jeśli tak, dodanie bezpośredniej krawędzi między nimi 
+   spowodowałoby przedwczesne zamknięcie mniejszego cyklu, co zepsułoby trasę komiwojażera. */
 bool checkCycle(unsigned startNode, unsigned targetNode, unsigned n, unsigned adj[20][20]) {
     bool visited[20] = {false};
     unsigned q[20]; // Prosta kolejka uzywana do przejscia grafu
@@ -79,13 +86,13 @@ bool checkCycle(unsigned startNode, unsigned targetNode, unsigned n, unsigned ad
         for (unsigned i = 0; i < n; i++) {
             // Jesli istnieje zaakceptowana sciezka z obecnego i w niej nie bylismy
             if (adj[curr][i] == 1 && !visited[i]) {
-                if (i == targetNode) return true; // PO POPRAWY(lepsze tlumaczenie):Znalazlem inne polaczenie! Grozi cyklem.
+                if (i == targetNode) return true; // Wykryto istniejące połączenie - dodanie krawędzi grozi zamknieciem cyklu.
                 visited[i] = true;
                 q[tail++] = i;
             }
         }
     }
-    return false; // Bezpiecznie, drogi sa odseparowane.
+    return false; // Drogi są odseparowane można bezpiecznie połączyć miasta.
 }
 
 Tour<unsigned> HeuristicTSPSolver::solveSE(const DistanceGraph& g, unsigned start) {
@@ -101,7 +108,9 @@ Tour<unsigned> HeuristicTSPSolver::solveSE(const DistanceGraph& g, unsigned star
         }
     }
     
-    // Sortowanie babelkowe: Ukladamy krawedzie rosnaco wedlug kosztow - DO POPRAWY(DLACZEGO)
+    /* Sortowanie bąbelkowe (Bubble Sort): Układamy krawędzie rosnąco według wag.
+    Jest to fundamentalny krok heurystyki SE – musimy posortować dane, aby móc w kolejnym 
+    kroku zachłannie wybierać krawędzie zaczynając od tych o najniższym koszcie.*/
     for (unsigned i = 0; i < edges.size(); i++) {
         for (unsigned j = 0; j < edges.size() - 1; j++) {
             if (edges[j].weight > edges[j+1].weight) {
